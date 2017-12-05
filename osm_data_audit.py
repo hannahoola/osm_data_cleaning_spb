@@ -16,7 +16,7 @@ FILENAME = tkinter.filedialog.askopenfilename()
 
 """
 
-street_type_re = re.compile(r'^[^А-Я\s]+\b|\b[^А-Я\s]+\.?$')
+street_type_re = re.compile(r'^[^А-Я\s]+(?=[ ])|(?<=[ ])[^А-Я\s]+\.?$')
   
 
 def count_street_type(street_types, street_name):
