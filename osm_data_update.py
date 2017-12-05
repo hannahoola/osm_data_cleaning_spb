@@ -14,7 +14,7 @@ OUTPUT = "streamed.osm"
 """
 
 expected = ["улица", "шоссе", "проспект", "проезд", "переулок", "аллея", "бульвар", "вал",
-			" линия", "набережная", "площадь", "садоводство", "проток", "дорога", "коса",
+			"линия", "набережная", "площадь", "садоводство", "проток", "дорога", "коса",
 			"крепость", "поле"]
 
 mapping = { "улица": ["ULITSA", "ул.", "ул", "улицаы", "Улица"],
@@ -31,7 +31,7 @@ mapping = { "улица": ["ULITSA", "ул.", "ул", "улицаы", "Улиц�
 			}
 
 street_re = re.compile(r'k="addr:street"')
-name_re = re.compile(r'(v=")(.*)(" ?)')
+name_re = re.compile(r'(v=")(.*)("[ ]?)')
 
 			
 def update_name(name, mapping):
@@ -41,16 +41,17 @@ def update_name(name, mapping):
         for street in mapping[item]:
             if street in name and len(street)>len(bad_street):
                 bad_street = street
-            if bad_street != "" and not done:
-                name = name.replace(bad_street, item)
-                done = True
+        if bad_street != "" and not done:
+            name = name.replace(bad_street, item)
+            done = True
     return name
 
-def is_bad_street(name, expected):
-    if any(item in name for item in expected):
-        return False
-    else:
-        return True
+def is_good_street(name, expected):
+    good = False
+    for word in name:
+        if any(item == word for item in expected):
+            good = True
+    return good
 
 def is_street_name(line):
     return (street_re.search(line))
@@ -64,7 +65,10 @@ def update_osm(osmfile, output):
         for line in osm_file:
             if "<tag" in line and is_street_name(line):
                     name = get_street_name(line)
-                    if is_bad_street(name, expected):
+                    name_list = name.split(' ')
+                    if is_good_street(name_list, expected):
+                        pass
+                    else:
                         name = update_name(name, mapping)
                         line = name_re.sub(r'\g<1>'+name+r'\g<3>', line)
                     output.write(line)
