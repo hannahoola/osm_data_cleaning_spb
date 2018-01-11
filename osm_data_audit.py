@@ -10,9 +10,9 @@ import codecs
 
 FILENAME = tkinter.filedialog.askopenfilename()
 """
-- audit the OSMFILE and create the variables 'mapping' and 'expected' to reflect
-    the changes needed to fix the unexpected street types to the appropriate
-    ones in the expected list.
+Audit the OSMFILE and see, what to include into the 'mapping' list 
+to reflect the changes needed to fix street types for the appropriate ones
+included into the 'expected' list.
 
 """
 

@@ -10,7 +10,10 @@ OUTPUT = "streamed.osm"
 
 
 """
-- fix the street names
+Fix the street names according to 'expected' dictionary and 'mapping' list, where
+'expected' is a list of correct street name types and
+'mapping' a dict of correct street name types as keys and a corresponding
+list of incorrect street name types as values.
 """
 
 expected = ["улица", "шоссе", "проспект", "проезд", "переулок", "аллея", "бульвар", "вал",
